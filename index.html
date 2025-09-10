@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arka Tama Morindo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* === BASE STYLE === */
+    body {
+      margin: 0;
+      font-family: "Myriad Pro", Arial, sans-serif; /* body text */
+      color: #ffffff;
+      background: #fff;
+      font-size: 15px;
+      line-height: 1.6;
+      padding-top: 0px; /* space for fixed header */
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Hape", Arial, sans-serif; /* titles */
+      color: #ffffff;
+    }
+
+    /* HEADER */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid #ddd;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      z-index: 1000;
+    }
+
+    .header-container {
+      width: 1200px;
+      max-width: 95%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 30px;
+    }
+
+    header img {
+      height: 36px;
+    }
+
+    nav {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #111;
+      font-size: 15px;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .contact {
+      border: 1px solid #111;
+      padding: 6px 16px;
+      font-size: 15px;
+      text-decoration: none;
+      color: #111;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      background: url("images/rectangle-1-2.png") no-repeat center/cover;
+      color: white;
+      padding: 90px 60px;
+      min-height: 500px;
+    }
+
+    .hero h1 {
+      font-size: 46px;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 18px;
+      font-family: "Hape", Arial, sans-serif;
+    }
+
+    .hero h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      font-family: "Hape", Arial, sans-serif;
+    }
+
+    .hero p {
+      font-size: 15px;
+      max-width: 520px;
+      margin-bottom: 22px;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .hero .buttons {
+      display: flex;
+      gap: 18px;
+    }
+
+    .hero .btn-green {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .hero .btn-outline {
+      background: white;
+      border: 1px solid #111;
+      padding: 10px 22px;
+      font-size: 15px;
+      cursor: pointer;
+      color: #111;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    /* ========== SERVICE CARDS (UPDATED: scroll + arrows) ========== */
+    /* wrapper keeps the original absolute positioning but enables layout for nav buttons + scroll container */
+    .service-wrap {
+      position: absolute;
+      bottom: -65px;
+      left: 60px;
+      right: 60px; /* keep inside page margins */
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 800;
+    }
+
+    .service-cards {
+      display: flex;
+      gap: 22px;
+      overflow-x: auto;
+      padding: 12px;
+      /* keep visual alignment with original card sizes */
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+    }
+
+    /* scrollbar styling */
+    .service-cards::-webkit-scrollbar {
+      height: 8px;
+    }
+    .service-cards::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .service-cards::-webkit-scrollbar-thumb {
+      background-color: #ccc;
+      border-radius: 4px;
+    }
+    /* firefox */
+    .service-cards {
+      scrollbar-width: thin;
+      scrollbar-color: #ccc transparent;
+    }
+
+    .service-card {
+      background: white;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      width: 220px;
+      min-width: 220px; /* important to make horizontal scroll work */
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: "Myriad Pro", Arial, sans-serif;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+    }
+
+    .service-card img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+    }
+
+    .service-card p {
+      padding: 12px;
+      color: #111;
+    }
+
+    /* arrow buttons */
+    .service-nav {
+      background: rgba(255,255,255,0.95);
+      border: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+      cursor: pointer;
+      transition: transform .12s ease, background-color .12s;
+      flex-shrink: 0;
+    }
+    .service-nav:active { transform: translateY(1px); }
+    .service-nav i { color: #111; font-size: 14px; }
+
+    /* ========== HISTORY (unchanged) ========== */
+    .history {
+      padding: 140px 60px 70px;
+      background: white;
+      font-size: 15px;
+      display: flex;
+      align-items: flex-start;
+      gap: 40px;
+    }
+
+    .history-text {
+      flex: 1;
+    }
+
+    .history h3 {
+      font-size: 14px;
+      font-weight: 400;
+      margin-bottom: 6px;
+      color: #111;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .history h2 {
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 18px;
+      line-height: 1.4;
+      color: #111;
+      font-family: "Hape", Arial, sans-serif;
+    }
+
+    .history p {
+      font-size: 15px;
+      margin-bottom: 16px;
+      max-width: 640px;
+      color: #111;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .history img {
+    flex: 3;
+    max-width: 550px;
+    min-height: px;
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    }
+
+    .bullet-points {
+      margin-top: 12px;
+    }
+
+    .bullet {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 15px;
+      color: #111;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .bullet span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #2e7d32;
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    /* SPLIT */
+    .split {
+      display: flex;
+      min-height: 320px;
+    }
+
+    .split img {
+      width: 50%;
+      object-fit: cover;
+    }
+
+    .split .text {
+      background: #2e7d32;
+      color: white;
+      padding: 50px;
+      font-size: 15px;
+      flex: 1;
+      line-height: 1.7;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .split .text h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: white;
+      font-family: "Hape", Arial, sans-serif;
+    }
+
+    /* FOOTER */
+    .footer {
+      background: #2c2c2c;
+      padding: 70px 0 35px;
+      color: #fff;
+      margin-top: 0px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 45px;
+      margin-bottom: 45px;
+      padding: 0 60px;
+    }
+
+    .footer-col h4 {
+      margin: 0 0 22px 0;
+      font-size: 1.3rem;
+      position: relative;
+      padding-bottom: 10px;
+      color: #4caf50;
+      font-family: "Hape", Arial, sans-serif;
+    }
+
+    .footer-col h4:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background-color: #4caf50;
+    }
+
+    .footer-about {
+      color: #ccc;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      max-width: 320px;
+      font-size: 15px;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 15px;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-links a:hover {
+      color: #4caf50;
+    }
+
+    .contact-info {
+      color: #ccc;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .social-links a:hover {
+      background: #4caf50;
+      transform: translateY(-3px);
+    }
+
+    .newsletter-form {
+      display: flex;
+      margin-top: 18px;
+      gap: 12px;
+    }
+
+    .newsletter-input {
+      flex: 1;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 15px;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .newsletter-input::placeholder {
+      color: #aaa;
+    }
+
+    .newsletter-btn {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 0 22px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background 0.3s;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .newsletter-btn:hover {
+      background: #3e8e41;
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: #999;
+      font-size: 0.95rem;
+      padding: 20px;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .payment-methods {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      font-family: "Myriad Pro", Arial, sans-serif;
+    }
+
+    .payment-method {
+      background: rgba(255,255,255,0.1);
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <img src="images/rectangle-24-56.png" alt="Logo">
+      <nav>
+        <a href="#hero">Main Homepage</a>
+        <a href="#products">Our Products v</a>
+        <a href="#platform">Our Platform</a>
+        <a href="tel:+6281181817008">+62 811-8181-7008</a>
+        <a href="#contact" class="contact">Contact Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <h1>When Craftsmanship<br>Meet Tea Leaves.</h1>
+    <h2>International Graded Tea Brewery in Indonesia</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    <div class="buttons">
+      <button class="btn-green" onclick="document.querySelector('#products').scrollIntoView({behavior:'smooth'})">Our Services</button>
+      <button class="btn-outline" onclick="document.querySelector('#platform').scrollIntoView({behavior:'smooth'})">Learn More</button>
+    </div>
+
+    <!-- Service Cards with scroll + nav -->
+    <div class="service-wrap">
+      <button class="service-nav left" aria-label="Previous services" title="Previous">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+
+      <div class="service-cards" id="serviceCards">
+        <div class="service-card">
+          <img src="images/rectangle-19-5.png" alt="Tea Roastery">
+          <p>Personalized Tea Roastery</p>
+        </div>
+        <div class="service-card">
+          <img src="images/rectangle-20-6.png" alt="Roasting">
+          <p>Taste Based Roasting Services</p>
+        </div>
+
+        <!-- 3 new placeholder cards -->
+        <div class="service-card">
+          <img src="https://via.placeholder.com/220x130?text=Exclusive+Tea+Selection" alt="Placeholder 1">
+          <p>Exclusive Tea Selection</p>
+        </div>
+        <div class="service-card">
+          <img src="https://via.placeholder.com/220x130?text=Brewing+Accessories" alt="Placeholder 2">
+          <p>Tea Brewing Accessories</p>
+        </div>
+        <div class="service-card">
+          <img src="https://via.placeholder.com/220x130?text=Custom+Packaging" alt="Placeholder 3">
+          <p>Custom Tea Packaging</p>
+        </div>
+      </div>
+
+      <button class="service-nav right" aria-label="Next services" title="Next">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- HISTORY -->
+  <section class="history" id="products">
+    <div class="history-text">
+      <h3>Sejarah singkat asal Teh Hijau di Indonesia</h3>
+      <h2>Dari 1830, Teh hijau mulai hadir di Indonesia dan berkembang sebagai komoditas yang umum konsumsi di perkebunan dan masyarakat Indonesia.</h2>
+      <p>Hingga kini, pada 2025, teh terus dibudidayakan dan menjadi bagian penting dari perkebunan Indonesia.</p>
+      <p><b>Brand</b> menjadi salah satu distributor dari teh hijau yang dibuat lokal</p>
+      <div class="bullet-points">
+        <div class="bullet"><span></span> Ocha Starter</div>
+        <div class="bullet"><span></span> 250mg@15 serving</div>
+        <div class="bullet"><span></span> 100mg@6 serving</div>
+      </div>
+    </div>
+    <img src="images/rectangle-8-7.png" alt="Tea Worker">
+  </section>
+
+  <!-- SPLIT -->
+  <section class="split" id="platform">
+    <img src="images/rectangle-9-8.png" alt="Matcha Bowl">
+    <div class="text">
+      <h2>Lorem ipsum dolor sit amet, consectetur</h2>
+      <p>Lorem ipsum dolor sit amet, adipiscing elit. eiusmod tempor ut labore et dolore magna. Ut ad veniam, quis nostrud.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contact">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Arkatama Morindo</h4>
+        <p class="footer-about">Crafting exceptional tea experiences through tradition, quality, and innovation since our founding. We source only the finest leaves for your daily ritual.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+      
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Our Products</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Tea Knowledge</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Sustainability</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Wholesale</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-col">
+        <h4>Contact Info</h4>
+        <div class="contact-info">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Istana Regency 1</span>
+        </div>
+        <div class="contact-info">
+          <i class="fas fa-phone"></i>
+          <span>+62-811-8181-7009</span>
+        </div>
+        <div class="contact-info">
+          <i class="fas fa-envelope"></i>
+          <span>arkatama.morindo@gmail.com</span>
+        </div>
+        
+        <div class="payment-methods">
+          <span class="payment-method">Visa</span>
+          <span class="payment-method">MasterCard</span>
+          <span class="payment-method">PayPal</span>
+          <span class="payment-method">Bank Transfer</span>
+        </div>
+      </div>
+      
+      <div class="footer-col">
+        <h4>Newsletter</h4>
+        <p class="footer-about">Subscribe to our newsletter for updates on new tea blends, exclusive offers, and brewing tips.</p>
+        <form class="newsletter-form">
+          <input type="email" class="newsletter-input" placeholder="Your email address">
+          <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    
+    <div class="copyright">
+      <p>&copy; 2023 Arkatama Morindo. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #e91e63;"></i> for tea lovers</p>
+    </div>
+  </footer>
+
+  <script>
+    // Simple scroll nav for the service cards
+    (function(){
+      const container = document.getElementById('serviceCards');
+      const btnLeft = document.querySelector('.service-nav.left');
+      const btnRight = document.querySelector('.service-nav.right');
+
+      if (!container || !btnLeft || !btnRight) return;
+
+      const scrollAmount = 240; // change if you want larger/smaller jump
+
+      btnLeft.addEventListener('click', () => {
+        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      });
+
+      btnRight.addEventListener('click', () => {
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      });
+
+      // Optional: hide/show arrows when not needed
+      function updateButtons() {
+        btnLeft.style.opacity = container.scrollLeft > 10 ? '1' : '0.4';
+        btnRight.style.opacity = (container.scrollLeft + container.clientWidth) < (container.scrollWidth - 10) ? '1' : '0.4';
+      }
+      container.addEventListener('scroll', updateButtons, { passive: true });
+      window.addEventListener('resize', updateButtons);
+      updateButtons();
+    })();
+  </script>
+</body>
+</html>
